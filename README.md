@@ -1,2 +1,2 @@
-# RBC-Classification
-Classification of RBC ( Red Blood Cells ) with CNN . (Convolutional Neural Network)
+# WBC-Classification
+Classification of WBC ( White Blood Cells ) with CNN . (Convolutional Neural Network)
