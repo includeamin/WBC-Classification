@@ -22,7 +22,7 @@ def show(image):
     plt.imshow(image, interpolation='nearest')
     plt.show()
 
-im = cv2.imread("4.jpg")
+im = cv2.imread("4.jpeg")
 im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
 
 image_blur = cv2.GaussianBlur(im, (7, 7), 0)
@@ -56,5 +56,5 @@ dim = (100, int(dst.shape[0] * r))
  
 
 resized = cv2.resize(dst, dim, interpolation = cv2.INTER_AREA)
-show(dst)
+show(image_with_ellipse)
 
