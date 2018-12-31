@@ -30,7 +30,9 @@ image_blur_hsv = cv2.cvtColor(image_blur, cv2.COLOR_RGB2HSV)
 min_red = np.array([80, 60, 140])
 max_red = np.array([255, 255, 255])
 image_red1 = cv2.inRange(image_blur_hsv, min_red, max_red)
-
+show(image_blur)
+show(image_blur_hsv)
+show(image_red1)
 big_contour, mask = find_biggest_contour(image_red1)
 overlay_mask(mask,im)
 
