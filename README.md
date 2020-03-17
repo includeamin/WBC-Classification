@@ -16,7 +16,7 @@ after of train you will see result plot:
 - copy TEST forlder from downloaded dataset to dataset directory
 - run this command
 ```bash
-python3 Test/load_test_model.py -d dataset/TEST -m SavedModel/150_epoch_model.hdf5
+python3 test_model.py -d dataset/TEST -m SavedModel/150_epoch_model.hdf5
 ```
 # Todo
 - [ ] Create demo api . [ upload and check the result realtime ]
