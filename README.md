@@ -1,5 +1,7 @@
 # WBC-Classification
 Classification of WBC ( White Blood Cells ) with CNN . (Convolutional Neural Network)
+---
+[![HitCount](http://hits.dwyl.com/includeamin/WBC-Classification.svg)](http://hits.dwyl.com/includeamin/WBC-Classification)
 
 ### Download model
 - Download [Dataset](https://www.kaggle.com/paultimothymooney/blood-cells/kernels?sortBy=relevance&group=everyone&search=includeamin&page=1&pageSize=20&datasetId=9232)
