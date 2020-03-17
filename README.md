@@ -6,7 +6,7 @@ Classification of WBC ( White Blood Cells ) with CNN . (Convolutional Neural Net
 - Copy TRAIN folder to dataset directory
 ### Train and save trained model
 Use this command to train the model and save model
-```shell script
+```bash
 python3 learning.py -d dataset/TRAIN -m sample.hdf5
 ```
 after of train you will see result plot:
@@ -15,7 +15,7 @@ after of train you will see result plot:
 ### Test the model
 - copy TEST forlder from downloaded dataset to dataset directory
 - run this command
-```shell script
+```bash
 python3 Test/load_test_model.py -d dataset/TEST -m SavedModel/150_epoch_model.hdf5
 ```
 # Todo
