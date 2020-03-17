@@ -1,5 +1,4 @@
-# WBC-Classification
-Classification of WBC ( White Blood Cells ) with CNN . (Convolutional Neural Network)
+IncludeNet
 
 ### download model
 - Download [Dataset](https://www.kaggle.com/paultimothymooney/blood-cells/kernels?sortBy=relevance&group=everyone&search=includeamin&page=1&pageSize=20&datasetId=9232)
@@ -17,5 +16,3 @@ python3 learning.py -d dataset/TRAIN -m sample.hdf5
 ```shell script
 python3 Test/load_test_model.py -d dataset/TEST -m SavedModel/150_epoch_model.hdf5
 ```
-# TODO LIST
-- [ ] Create demo api . [ upload and check the result realtime ]
