@@ -9,7 +9,8 @@ Use this command to train the model and save model
 ```shell script
 python3 learning.py -d dataset/TRAIN -m sample.hdf5
 ```
-
+after of train you will see result plot:
+![Image of Yaktocat](train_result.png)
 
 ### test model
 - copy TEST forlder from downloaded dataset to dataset directory
@@ -17,5 +18,5 @@ python3 learning.py -d dataset/TRAIN -m sample.hdf5
 ```shell script
 python3 Test/load_test_model.py -d dataset/TEST -m SavedModel/150_epoch_model.hdf5
 ```
-# TODO LIST
+# Todo
 - [ ] Create demo api . [ upload and check the result realtime ]
