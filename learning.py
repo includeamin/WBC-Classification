@@ -16,7 +16,7 @@ ap.add_argument("-d", "--dataset", required=True, help="insert dataset")
 ap.add_argument("-m", "--model", required=True, help="path to output model")
 args = vars(ap.parse_args())
 size = 50
-ep = 50
+ep = 100
 dpt = 3
 
 
