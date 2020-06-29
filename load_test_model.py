@@ -101,4 +101,4 @@ def sampling_images():
     return data, image_paths
 
 
-# test()
+test()
