@@ -22,6 +22,6 @@ python3 load_test_model.py -d ./CNN/datasets/TEST -m ./TrainedModel/model_epoch_
 ```
 
 ## NOTE
-default epoch count is 100. for change it,just edit `cp` variable in [`earning.py`](learning.py)
+default epoch count is 100. for change it, just edit `cp` variable in [`earning.py`](learning.py)
 # Todo
 - more customizable
