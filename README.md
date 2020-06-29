@@ -21,5 +21,7 @@ after train you will see result plot:
 python3 load_test_model.py -d ./CNN/datasets/TEST -m ./TrainedModel/model_epoch_100.hdf5
 ```
 
+## NOTE
+default epoch count is 100. for change it,just edit `cp` variable in [`earning.py`](learning.py)
 # Todo
-- [ ] Create demo api . [ upload and check the result realtime ]
+- more customizable
