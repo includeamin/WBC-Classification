@@ -17,8 +17,6 @@ after train you will see result plot:
 ![](image.png)
 
 ### Test the model
-- copy TEST folder from downloaded dataset to dataset directory
-- run this command
 ```bash
 python3 load_test_model.py -d ./CNN/datasets/TEST -m ./TrainedModel/model_epoch_100.hdf5
 ```
