@@ -9,6 +9,15 @@ Classification of WBC ( White Blood Cells ) with CNN . (Convectional Neural Netw
 
 ### DATASET
 -  [Dataset](https://www.kaggle.com/paultimothymooney/blood-cells/kernels?sortBy=relevance&group=everyone&search=includeamin&page=1&pageSize=20&datasetId=9232)
+### Requirements
+```
+Keras==2.1.5
+numpy==1.18.1
+matplotlib==3.1.1
+imutils==0.5.3
+scikit_learn==0.23.1
+```
+
 ### Train and save trained model
 Use this command to train the model and save model
 ```bash
