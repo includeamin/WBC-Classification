@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "wbc-classification"
+version = "0.1.0"
+description = ""
+authors = ["Amin Jamal <aminjamal10@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+keras = "^3.6.0"
+matplotlib = "^3.9.2"
+imutils = "^0.5.4"
+scikit-learn = "^1.5.2"
+tensorflow = "^2.17.0"
+opencv-python = "^4.10.0.84"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
