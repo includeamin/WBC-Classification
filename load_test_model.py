@@ -14,7 +14,7 @@ def show(image):
     plt.figure(figsize=(15, 15))
 
     # Show image, with nearest neighbour interpolation
-    plt.imshow(image, interpolation='nearest')
+    plt.imshow(image, interpolation="nearest")
     plt.show()
 
 
@@ -28,8 +28,8 @@ def ready_to_use_images(im):
     overlay_mask(mask, im)
     moments = cv2.moments(mask)
     centre_of_mass = (
-        int(moments['m10'] / moments['m00']),
-        int(moments['m01'] / moments['m00'])
+        int(moments["m10"] / moments["m00"]),
+        int(moments["m01"] / moments["m00"]),
     )
     image_with_com = im.copy()
     # cv2.rectangle(image_with_com,10,(0,255,0),-1,cv2.LINE_AA)
@@ -40,12 +40,14 @@ def ready_to_use_images(im):
     # print(centre_of_mass)
     dst = cv2.bitwise_and(im, im, mask=mask)
 
-    return (dst)
+    return dst
 
 
 def find_biggest_contour(image):
     image = image.copy()
-    s, contours, hierarchy = cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    s, contours, hierarchy = cv2.findContours(
+        image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE
+    )
     biggest_contour = max(contours, key=cv2.contourArea)
     mask = np.zeros(image.shape, np.uint8)
     cv2.drawContours(mask, [biggest_contour], -1, 255, -1)
@@ -77,13 +79,20 @@ def test():
 def predicting(data, image_paths, model):
     preds = model.predict(data, batch_size=size).argmax(axis=1)
     print(preds)
-    for (i, imagePath) in enumerate(image_paths):
+    for i, imagePath in enumerate(image_paths):
         # load the example image, draw the prediction, and display it
         # to our screen
         image = cv2.imread(imagePath)
         # image=ReadyToUseImage(image)
-        cv2.putText(image, "Label: {}".format(classLabels[preds[i]]),
-                    (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+        cv2.putText(
+            image,
+            "Label: {}".format(classLabels[preds[i]]),
+            (10, 30),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.7,
+            (0, 255, 0),
+            2,
+        )
         cv2.imshow("Image", image)
         cv2.waitKey(0)
 

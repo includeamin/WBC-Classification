@@ -1,4 +1,4 @@
-from keras.preprocessing.image import img_to_array
+from keras.api.preprocessing.image import img_to_array
 
 
 class ImageToArrayPreprocessor:
@@ -6,4 +6,5 @@ class ImageToArrayPreprocessor:
         self.dataFormat = data_format
 
     def preprocess(self, image):
+        # print(image)
         return img_to_array(image, data_format=self.dataFormat)
