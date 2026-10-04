@@ -37,3 +37,12 @@ def test_freeze_leaves_only_head_trainable(name):
 
 def test_supports_freezing():
     assert supports_freezing("resnet18") and not supports_freezing("baseline")
+
+
+def test_pretrained_download_failure_is_a_config_error(monkeypatch):
+    def offline(*args, **kwargs):
+        raise OSError("offline")
+
+    monkeypatch.setattr("wbc_classification.models.backbone.tv_models.get_model", offline)
+    with pytest.raises(ConfigError, match="resnet18"):
+        build_model("resnet18", num_classes=4, pretrained=True)

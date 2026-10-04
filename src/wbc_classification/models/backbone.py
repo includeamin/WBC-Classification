@@ -5,11 +5,21 @@ from typing import Any, cast
 from torch import nn
 from torchvision import models as tv_models
 
+from wbc_classification.errors import ConfigError
+
 SUPPORTED_BACKBONES = ("resnet18", "resnet50", "efficientnet_b0")
 
 
 def build_backbone(name: str, num_classes: int, pretrained: bool) -> nn.Module:
-    model = cast(Any, tv_models.get_model(name, weights="DEFAULT" if pretrained else None))
+    try:
+        model = cast(Any, tv_models.get_model(name, weights="DEFAULT" if pretrained else None))
+    except Exception as exc:
+        if not pretrained:
+            raise
+        raise ConfigError(
+            f"Could not download pretrained weights for {name!r}: {exc}. "
+            "Check your network connection or set model.pretrained: false."
+        ) from exc
     if name.startswith("resnet"):
         model.fc = nn.Linear(model.fc.in_features, num_classes)
     else:

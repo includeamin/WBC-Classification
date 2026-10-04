@@ -25,6 +25,25 @@ def test_resolve_device():
         resolve_device("bogus")
 
 
+def test_resolve_device_rejects_unavailable_cuda(monkeypatch):
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
+    with pytest.raises(ConfigError, match="CUDA"):
+        resolve_device("cuda")
+
+
+def test_resolve_device_rejects_bad_cuda_index(monkeypatch):
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: True)
+    monkeypatch.setattr(torch.cuda, "device_count", lambda: 1)
+    with pytest.raises(ConfigError, match="1"):
+        resolve_device("cuda:3")
+
+
+def test_resolve_device_rejects_unavailable_mps(monkeypatch):
+    monkeypatch.setattr(torch.backends.mps, "is_available", lambda: False)
+    with pytest.raises(ConfigError, match="mps"):
+        resolve_device("mps")
+
+
 def test_set_seed_makes_torch_deterministic():
     set_seed(3)
     first = torch.rand(3)
