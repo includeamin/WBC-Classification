@@ -14,8 +14,9 @@ from torch.utils.data import DataLoader
 
 from wbc_classification.config import Config, dump_config
 from wbc_classification.data.datasets import build_train_val_loaders
-from wbc_classification.engine.checkpoint import save_checkpoint
-from wbc_classification.engine.metrics import save_curves
+from wbc_classification.engine.checkpoint import load_checkpoint, save_checkpoint
+from wbc_classification.engine.evaluate import collect_predictions
+from wbc_classification.engine.metrics import compute_metrics, save_confusion_matrix, save_curves
 from wbc_classification.engine.runtime import resolve_device, set_seed
 from wbc_classification.errors import ConfigError
 from wbc_classification.models.backbone import set_backbone_frozen
@@ -131,4 +132,11 @@ def train(cfg: Config) -> TrainResult:
         writer.writeheader()
         writer.writerows(history)
     save_curves(history, run_dir / "curves.png")
+
+    best_model, _, _ = load_checkpoint(best_path)
+    y_true, y_pred = collect_predictions(best_model.to(device), loaders.val, device)
+    metrics = compute_metrics(y_true, y_pred, loaders.class_names)
+    save_confusion_matrix(
+        metrics["confusion_matrix"], loaders.class_names, run_dir / "confusion_matrix.png"
+    )
     return TrainResult(run_dir, best_path, last_path, best_acc, history)

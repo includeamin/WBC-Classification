@@ -9,7 +9,14 @@ from wbc_classification.errors import ConfigError
 
 def test_train_writes_all_artifacts(trained):
     run = trained.run_dir
-    for name in ("config.yaml", "metrics.csv", "curves.png", "best.pt", "last.pt"):
+    for name in (
+        "config.yaml",
+        "metrics.csv",
+        "curves.png",
+        "confusion_matrix.png",
+        "best.pt",
+        "last.pt",
+    ):
         assert (run / name).is_file(), name
     assert len(trained.history) == 1
     assert 0.0 <= trained.best_val_accuracy <= 1.0
