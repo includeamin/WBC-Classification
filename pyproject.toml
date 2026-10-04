@@ -68,6 +68,12 @@ release = [
     "python-semantic-release (>=10.7.0,<11.0.0)"
 ]
 
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.release]
+optional = true
+
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
 commit_parser = "conventional"

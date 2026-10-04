@@ -3497,4 +3497,4 @@ kaggle = ["kagglehub"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.15,!=3.14.1"
-content-hash = "1dbbbe2c8ee986b2bce51f0b5d1c95550ee8700b8abf4a73b3d885ca515d668d"
+content-hash = "c852a973f1b839bf6d8a62efb9da4108cfa2cafb7b22176f6d2b29d3521380bc"
