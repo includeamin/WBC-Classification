@@ -1,0 +1,53 @@
+site_name: WBC Classification
+site_description: Classify white blood cell images with PyTorch.
+site_url: https://includeamin.github.io/WBC-Classification/
+repo_url: https://github.com/includeamin/WBC-Classification
+repo_name: includeamin/WBC-Classification
+
+exclude_docs: |
+  superpowers/
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle: {icon: material/weather-night, name: Switch to dark mode}
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle: {icon: material/weather-sunny, name: Switch to light mode}
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Guides:
+      - Data: data.md
+      - Training: training.md
+      - Configuration: configuration.md
+      - WBC detection walkthrough: wbc-detection.md
+  - Results: results.md
+  - Reference:
+      - CLI: reference/cli.md
+      - Python API: reference/api.md
+      - Architecture: architecture.md
+  - Contributing: contributing.md
+  - Changelog: changelog.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.snippets:
+      base_path: ["."]
