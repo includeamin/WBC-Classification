@@ -1,7 +1,5 @@
 """Single-file checkpoints: weights + class names + config."""
 
-import pickle
-import struct
 from collections.abc import Sequence
 from pathlib import Path
 
@@ -40,7 +38,7 @@ def load_checkpoint(path: Path) -> tuple[nn.Module, list[str], Config]:
         raise CheckpointError(f"Checkpoint not found: {path}")
     try:
         payload = torch.load(path, map_location="cpu", weights_only=True)
-    except (RuntimeError, pickle.UnpicklingError, EOFError, OSError, struct.error) as exc:
+    except Exception as exc:  # torch raises varying types for corrupt files across versions
         raise CheckpointError(f"Cannot read checkpoint {path}: {exc}") from exc
     if not isinstance(payload, dict) or not payload.keys() >= _REQUIRED_KEYS:
         raise CheckpointError(f"{path} is not a wbc-classification checkpoint")

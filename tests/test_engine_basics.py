@@ -112,3 +112,36 @@ def test_checkpoint_class_count_mismatch(tmp_path):
     )  # 4 outputs vs 3 names
     with pytest.raises(CheckpointError, match="do not match"):
         load_checkpoint(path)
+
+
+def _real_checkpoint(tmp_path):
+    cfg = Config(model=ModelConfig(name="baseline", pretrained=False))
+    path = tmp_path / "real.pt"
+    save_checkpoint(path, _baseline(), NAMES, cfg, epoch=1, val_accuracy=0.1)
+    return path.read_bytes()
+
+
+def test_checkpoint_plain_text_file(tmp_path):
+    bad = tmp_path / "text.pt"
+    bad.write_text("hello world")
+    with pytest.raises(CheckpointError, match="text.pt"):
+        load_checkpoint(bad)
+
+
+def test_checkpoint_truncated_file(tmp_path):
+    data = _real_checkpoint(tmp_path)
+    bad = tmp_path / "truncated.pt"
+    bad.write_bytes(data[: len(data) // 2])
+    with pytest.raises(CheckpointError, match="truncated.pt"):
+        load_checkpoint(bad)
+
+
+def test_checkpoint_bit_flipped_file(tmp_path):
+    data = bytearray(_real_checkpoint(tmp_path))
+    start = 100  # inside the zip's pickle record (tensor payload bytes would load silently)
+    for i in range(start, start + 64):
+        data[i] ^= 0xFF
+    bad = tmp_path / "flipped.pt"
+    bad.write_bytes(bytes(data))
+    with pytest.raises(CheckpointError, match="flipped.pt"):
+        load_checkpoint(bad)
