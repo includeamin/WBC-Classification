@@ -1,0 +1,98 @@
+[project]
+name = "wbc-classification"
+version = "0.0.0"
+description = "Classify white blood cell images (eosinophil, lymphocyte, monocyte, neutrophil) with PyTorch."
+readme = "README.md"
+requires-python = ">=3.12,<3.15,!=3.14.1"
+license = { text = "BSD-3-Clause" }
+authors = [{ name = "Amin Jamal" }]
+keywords = ["white blood cells", "image classification", "pytorch", "medical imaging"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+]
+dependencies = ["torch (>=2.14.1,<3.0.0)", "torchvision (>=0.29.1,<0.30.0)", "numpy (>=2.5.3,<3.0.0)", "opencv-python-headless (>=5.0.0.93,<6.0.0.0)", "pillow (>=12.3.0,<13.0.0)", "scikit-learn (>=1.9.1,<2.0.0)", "matplotlib (>=3.11.2,<4.0.0)", "typer (>=0.27.2,<0.28.0)", "pydantic (>=2.13.5,<3.0.0)", "pyyaml (>=6.0.3,<7.0.0)"]
+
+[project.urls]
+Homepage = "https://github.com/includeamin/WBC-Classification"
+Documentation = "https://includeamin.github.io/WBC-Classification/"
+Changelog = "https://github.com/includeamin/WBC-Classification/blob/main/CHANGELOG.md"
+
+[project.scripts]
+wbc = "wbc_classification.cli:app"
+
+[project.optional-dependencies]
+kaggle = ["kagglehub>=1.0.2"]
+
+[tool.poetry]
+packages = [{ include = "wbc_classification", from = "src" }]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+extend-exclude = ["docs/superpowers"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+check_untyped_defs = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-m 'not slow'"
+markers = ["slow: long-running tests (full training, network); not run in CI"]
+
+[dependency-groups]
+dev = [
+    "pytest (>=9.1.1,<10.0.0)",
+    "ruff (>=0.16.10,<0.17.0)",
+    "mypy (>=2.4.0,<3.0.0)",
+    "types-pyyaml (>=6.0.12.20260906,<7.0.0.0)"
+]
+docs = [
+    "mkdocs (>=1.6.1,<2.0.0)",
+    "mkdocs-material (>=9.7.7,<10.0.0)",
+    "mkdocstrings[python] (>=1.0.6,<2.0.0)"
+]
+release = [
+    "python-semantic-release (>=10.7.0,<11.0.0)"
+]
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.release]
+optional = true
+
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+commit_parser = "conventional"
+allow_zero_version = true
+major_on_zero = false
+tag_format = "v{version}"
+build_command = "pip install -q poetry && poetry build"
+
+[tool.semantic_release.branches.main]
+match = "main"
+
+[tool.semantic_release.changelog]
+mode = "update"
+
+[tool.semantic_release.commit_parser_options]
+allowed_tags = ["feat", "fix", "perf", "docs", "chore", "ci", "test", "refactor", "build", "style"]
+minor_tags = ["feat"]
+patch_tags = ["fix", "perf"]
+
+[tool.semantic_release.publish]
+dist_glob_patterns = ["dist/*"]
+upload_to_vcs_release = true

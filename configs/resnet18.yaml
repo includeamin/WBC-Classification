@@ -1,0 +1,16 @@
+# Fine-tune an ImageNet-pretrained ResNet-18.
+preprocessing:
+  crop: false
+data:
+  root: data
+  image_size: 128
+  batch_size: 32
+model:
+  name: resnet18
+  pretrained: true
+  freeze_backbone_epochs: 2
+train:
+  name: resnet18
+  epochs: 25
+  lr: 0.0005
+  patience: 6

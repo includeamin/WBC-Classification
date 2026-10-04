@@ -1,0 +1,16 @@
+# Lightweight baseline: the original IncludeNet idea, rewritten with BatchNorm + GAP.
+preprocessing:
+  crop: false
+data:
+  root: data
+  image_size: 64
+  batch_size: 64
+  val_fraction: 0.2
+model:
+  name: baseline
+  pretrained: false
+train:
+  name: baseline
+  epochs: 60
+  lr: 0.001
+  patience: 10

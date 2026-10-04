@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: pipx install poetry
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+          cache: poetry
+      - run: poetry install --with dev
+      - run: poetry run ruff check .
+      - run: poetry run ruff format --check .
+      - run: poetry run mypy src
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v7
+      - run: pipx install poetry
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: poetry
+      - run: poetry install --with dev
+      - run: poetry run pytest -q
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: pipx install poetry
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+          cache: poetry
+      - run: poetry install --with docs
+      - run: poetry run typer wbc_classification.cli utils docs --name wbc --output docs/reference/cli.md
+      - run: poetry run mkdocs build --strict

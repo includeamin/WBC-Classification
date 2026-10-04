@@ -103,3 +103,15 @@ venv.bak/
 # mypy
 .mypy_cache/
 ./dataset/TRAIN
+# Project
+/data/*
+!/data/README.md
+runs/
+site/
+docs/reference/cli.md
+.venv/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+segmentation/
+metrics.json
