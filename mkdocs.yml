@@ -25,14 +25,16 @@ nav:
   - Getting started: getting-started.md
   - Guides:
       - Data: data.md
+      - Pipeline (detect and classify): pipeline.md
       - Training: training.md
       - Configuration: configuration.md
       - WBC detection walkthrough: wbc-detection.md
   - Results: results.md
   - Reference:
+      - Architecture: architecture.md
+      - Models: models.md
       - CLI: reference/cli.md
       - Python API: reference/api.md
-      - Architecture: architecture.md
   - Contributing: contributing.md
   - Changelog: changelog.md
 
@@ -48,6 +50,10 @@ markdown_extensions:
   - toc:
       permalink: true
   - pymdownx.highlight
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.snippets:
       base_path: ["."]
