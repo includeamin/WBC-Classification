@@ -1,39 +1,44 @@
-# WBC-Classification
-Classification of WBC ( White Blood Cells ) with CNN . (Convectional Neural Network)
----
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=FEFTEUJT3YPDJ)
----
+# WBC Classification
 
+[![CI](https://github.com/includeamin/WBC-Classification/actions/workflows/ci.yml/badge.svg)](https://github.com/includeamin/WBC-Classification/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/includeamin/WBC-Classification)](https://github.com/includeamin/WBC-Classification/releases)
+[![Python](https://img.shields.io/badge/python-3.12%2B-blue)](pyproject.toml)
+[![License](https://img.shields.io/github/license/includeamin/WBC-Classification)](LICENSE)
+[![Docs](https://img.shields.io/badge/docs-mkdocs-informational)](https://includeamin.github.io/WBC-Classification/)
 
-[![HitCount](http://hits.dwyl.com/includeamin/WBC-Classification.svg)](http://hits.dwyl.com/includeamin/WBC-Classification)
+Classify white blood cell images — **eosinophil, lymphocyte, monocyte, neutrophil** — with PyTorch.
+Fine-tune a pretrained ResNet / EfficientNet or train the small `baseline` CNN, all from one CLI.
 
-### DATASET
--  [Dataset](https://www.kaggle.com/paultimothymooney/blood-cells/kernels?sortBy=relevance&group=everyone&search=includeamin&page=1&pageSize=20&datasetId=9232)
-### Requirements
-```
-Keras==2.1.5
-numpy==1.18.1
-matplotlib==3.1.1
-imutils==0.5.3
-scikit_learn==0.23.1
-```
+## Quick start
 
-### Train and save trained model
-Use this command to train the model and save model
 ```bash
-git clone 
+git clone https://github.com/includeamin/WBC-Classification.git
 cd WBC-Classification
-python3 learning.py -d ./CNN/datasets/TRAIN/ -m ./TrainedModel/model_epoch_100.hdf5
-```
-after train you will see result plot:
-![](image.png)
+poetry install --extras kaggle
 
-### Test the model
-```bash
-python3 load_test_model.py -d ./CNN/datasets/TEST -m ./TrainedModel/model_epoch_100.hdf5
+poetry run wbc download-data --dest data
+poetry run wbc train -c configs/resnet18.yaml
+poetry run wbc evaluate runs/<run>/best.pt --output metrics.json
+poetry run wbc predict path/to/cell.jpeg -c runs/<run>/best.pt
 ```
 
-## NOTE
-default epoch count is 100. for change it, just edit `cp` variable in [`learning.py`](learning.py)
-# Todo
-- more customizable
+Requires Python 3.12+ and [Poetry](https://python-poetry.org/). Training pretrained models is best done on a GPU
+(see the [training guide](https://includeamin.github.io/WBC-Classification/training/) and `notebooks/train_colab.ipynb`).
+
+## Documentation
+
+Full docs: <https://includeamin.github.io/WBC-Classification/> — data setup, configuration reference,
+CLI and API reference, architecture, results.
+
+## Dataset
+
+[Blood Cell Images](https://www.kaggle.com/datasets/paultimothymooney/blood-cells) on Kaggle (not stored in this repository).
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Releases and the changelog are automated from
+[Conventional Commits](https://www.conventionalcommits.org/); see [CHANGELOG.md](CHANGELOG.md).
+
+## License
+
+BSD 3-Clause — see [LICENSE](LICENSE).
