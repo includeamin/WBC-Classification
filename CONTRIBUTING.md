@@ -38,3 +38,14 @@ Do not edit `CHANGELOG.md` or the version in `pyproject.toml` by hand; the relea
 ## Adding a model
 
 Add an entry to `models/registry.py`, a config in `configs/`, and a shape test in `tests/test_models.py`.
+
+## Releases
+
+Every push to `main` runs the `Release` workflow (python-semantic-release). It computes the next
+version from the Conventional Commits, updates `project.version` in `pyproject.toml` and
+`CHANGELOG.md`, tags `vX.Y.Z` and creates a GitHub Release with the built wheel and sdist.
+
+- The workflow pushes the version-bump commit and tag to `main`, so branch protection must allow
+  `github-actions[bot]` to push (or use a PAT / GitHub App token instead of `GITHUB_TOKEN`).
+- PyPI publishing is optional: register the project on PyPI with a trusted publisher for this
+  repository and the `release.yml` workflow, then set the repository variable `PUBLISH_PYPI` to `true`.
