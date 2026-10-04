@@ -1,7 +1,13 @@
 # Configuration
 
 Experiments are described by a YAML file (see `configs/`). Unknown keys are rejected so typos fail fast.
-Any value can be overridden on the command line (`wbc train -c cfg.yaml --epochs 5 --lr 0.0003`).
+Common values have dedicated flags (`wbc train -c cfg.yaml --epochs 5 --lr 0.0003`).
+Any field can be overridden with the repeatable `--set section.field=value` option; values are parsed as YAML,
+and `--set` takes precedence over the dedicated flags:
+
+```bash
+wbc train -c configs/resnet18.yaml --set data.num_workers=4 --set train.seed=1
+```
 
 ```yaml
 preprocessing:

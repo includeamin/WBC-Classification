@@ -1,3 +1,4 @@
+import pytest
 from typer.testing import CliRunner
 
 from wbc_classification.cli import app
@@ -125,3 +126,42 @@ def test_predict_same_stem_inputs_get_distinct_annotations(trained, tmp_path, wr
     )
     assert result.exit_code == 0, result.output
     assert len(list(out.glob("*.png"))) == 2
+
+
+_TINY = [
+    "--model", "baseline", "--no-pretrained", "--epochs", "1",
+    "--batch-size", "4", "--image-size", "32", "--device", "cpu", "--name", "cli",
+]  # fmt: skip
+
+
+def test_set_overrides_any_field(data_root, tmp_path):
+    result = runner.invoke(
+        app,
+        ["train", "--data-root", str(data_root), "--output-dir", str(tmp_path), *_TINY,
+         "--set", "train.seed=7", "--set", "data.num_workers=0", "--set", "train.patience=3"],
+    )  # fmt: skip
+    assert result.exit_code == 0, result.output
+    saved = next(tmp_path.glob("cli-*/config.yaml")).read_text()
+    assert "seed: 7" in saved and "patience: 3" in saved
+
+
+def test_set_wins_over_named_flag(data_root, tmp_path):
+    result = runner.invoke(
+        app,
+        ["train", "--data-root", str(data_root), "--output-dir", str(tmp_path), *_TINY,
+         "--set", "train.name=winner"],
+    )  # fmt: skip
+    assert result.exit_code == 0, result.output
+    assert list(tmp_path.glob("winner-*/best.pt"))
+
+
+@pytest.mark.parametrize("item", ["train.seed", "seed=3", "train.seed=", "train.seed=null"])
+def test_set_malformed_is_a_clean_error(item):
+    result = runner.invoke(app, ["train", "--set", item])
+    assert result.exit_code == 1
+    assert "Error:" in result.output and "Traceback" not in result.output
+
+
+def test_set_unknown_field_names_it():
+    result = runner.invoke(app, ["train", "--set", "train.epohcs=3"])
+    assert result.exit_code == 1 and "epohcs" in result.output

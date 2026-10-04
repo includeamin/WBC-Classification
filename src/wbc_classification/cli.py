@@ -8,6 +8,7 @@ from typing import Annotated, Any
 
 import numpy as np
 import typer
+import yaml
 from PIL import Image
 
 from wbc_classification import __version__
@@ -18,7 +19,7 @@ from wbc_classification.engine.evaluate import evaluate_checkpoint
 from wbc_classification.engine.metrics import format_report
 from wbc_classification.engine.predict import annotate_predictions, predict_images
 from wbc_classification.engine.train import train as run_training
-from wbc_classification.errors import WBCError
+from wbc_classification.errors import ConfigError, WBCError
 from wbc_classification.preprocessing.segmentation import crop_cell, draw_overlay, segment_cell
 
 app = typer.Typer(
@@ -59,6 +60,24 @@ def _handle_errors(func: Callable[..., Any]) -> Callable[..., Any]:
     return wrapper
 
 
+def _parse_set_options(items: list[str]) -> dict[str, Any]:
+    """Turn ``section.field=value`` strings into typed config overrides."""
+    parsed: dict[str, Any] = {}
+    for item in items:
+        key, sep, raw = item.partition("=")
+        key = key.strip()
+        if not sep or "." not in key or key.startswith(".") or key.endswith("."):
+            raise ConfigError(f"--set expects section.field=value, got {item!r}")
+        try:
+            value = yaml.safe_load(raw)
+        except yaml.YAMLError as exc:
+            raise ConfigError(f"--set {item!r}: cannot parse value: {exc}") from exc
+        if value is None:
+            raise ConfigError(f"--set {item!r} has an empty value; expected section.field=value")
+        parsed[key] = value
+    return parsed
+
+
 @app.command()
 @_handle_errors
 def train(
@@ -76,9 +95,23 @@ def train(
     output_dir: Annotated[Path | None, typer.Option(help="Where run folders are written.")] = None,
     device: Annotated[str | None, typer.Option(help="auto, cpu, cuda, mps.")] = None,
     name: Annotated[str | None, typer.Option(help="Run name prefix.")] = None,
-    pretrained: Annotated[bool | None, typer.Option("--pretrained/--no-pretrained")] = None,
+    pretrained: Annotated[
+        bool | None,
+        typer.Option(
+            "--pretrained/--no-pretrained",
+            help="Use ImageNet-pretrained weights (backbones only).",
+        ),
+    ] = None,
     crop: Annotated[
         bool | None, typer.Option("--crop/--no-crop", help="Crop to the cell first.")
+    ] = None,
+    set_options: Annotated[
+        list[str] | None,
+        typer.Option(
+            "--set",
+            "-s",
+            help="Override any config field, e.g. --set train.seed=1 (repeatable).",
+        ),
     ] = None,
 ) -> None:
     """Train a model and write a run folder with checkpoints, metrics and plots."""
@@ -96,6 +129,7 @@ def train(
             "train.name": name,
             "model.pretrained": pretrained,
             "preprocessing.crop": crop,
+            **_parse_set_options(set_options or []),
         },
     )
     result = run_training(cfg)
