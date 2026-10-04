@@ -1,0 +1,16 @@
+# Fine-tune an ImageNet-pretrained EfficientNet-B0.
+preprocessing:
+  crop: false
+data:
+  root: data
+  image_size: 160
+  batch_size: 32
+model:
+  name: efficientnet_b0
+  pretrained: true
+  freeze_backbone_epochs: 2
+train:
+  name: efficientnet_b0
+  epochs: 25
+  lr: 0.0005
+  patience: 6
