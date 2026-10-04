@@ -113,3 +113,5 @@ docs/reference/cli.md
 .ruff_cache/
 .mypy_cache/
 .pytest_cache/
+segmentation/
+metrics.json

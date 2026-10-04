@@ -22,7 +22,7 @@ See [Data](data.md) for the expected layout and Kaggle credentials.
 
 ```bash
 poetry run wbc train -c configs/resnet18.yaml
-poetry run wbc evaluate runs/resnet18-<timestamp>/best.pt --output metrics.json
+poetry run wbc evaluate runs/resnet18-<timestamp>/best.pt --output runs/resnet18-<timestamp>/test_metrics.json
 poetry run wbc predict path/to/cell.jpeg -c runs/resnet18-<timestamp>/best.pt
 ```
 

@@ -4,7 +4,7 @@ The optional crop step locates the white blood cell with classical computer visi
 
 1. Blur the RGB image (Gaussian, 7×7) — ![blur](assets/detection/blur.png)
 2. Convert to HSV — ![hsv](assets/detection/hsv.png)
-3. Keep pixels inside the cell colour range (H 80–255, S 60–255, V 140–255) — ![color filtering](assets/detection/color-filtering.png)
+3. Keep pixels inside the cell colour range (`HSV_LOWER = (80, 60, 140)`, `HSV_UPPER = (255, 255, 255)` in `segmentation.py`; OpenCV's 8-bit hue only goes up to 179, so the effective hue range is 80–179) — ![color filtering](assets/detection/color-filtering.png)
 4. Take the largest contour as the cell mask — ![mask](assets/detection/mask.png)
 5. Crop around the minimum enclosing circle — ![result](assets/detection/final.png)
 

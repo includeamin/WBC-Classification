@@ -18,7 +18,7 @@ poetry install --extras kaggle
 
 poetry run wbc download-data --dest data
 poetry run wbc train -c configs/resnet18.yaml
-poetry run wbc evaluate runs/<run>/best.pt --output metrics.json
+poetry run wbc evaluate runs/<run>/best.pt --output runs/<run>/test_metrics.json
 poetry run wbc predict path/to/cell.jpeg -c runs/<run>/best.pt
 ```
 

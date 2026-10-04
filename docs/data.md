@@ -18,3 +18,9 @@ Expected layout:
 - A stratified, seeded validation split is carved from `TRAIN`. `TEST` is only used by `wbc evaluate`.
 - If Kaggle asks for authentication, create an API token and set `KAGGLE_USERNAME` / `KAGGLE_KEY`
   (or use `~/.kaggle/kaggle.json`). You can also download the dataset manually and copy `TRAIN/` and `TEST/` into `data/`.
+
+!!! warning "Validation split caveat"
+    The Kaggle `TRAIN` folder contains augmented copies of a smaller set of original images, so the
+    stratified validation split drawn from `TRAIN` can contain near-duplicates of training images and
+    validation accuracy may look optimistic. The held-out `TEST` accuracy from `wbc evaluate` is the
+    number to report.
