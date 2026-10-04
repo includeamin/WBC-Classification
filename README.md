@@ -22,6 +22,8 @@ poetry run wbc evaluate runs/<run>/best.pt --output runs/<run>/test_metrics.json
 poetry run wbc predict path/to/cell.jpeg -c runs/<run>/best.pt
 ```
 
+Shortcuts are available through `make` (`make data`, `make train`, `make check`, ...); run `make help` for the list.
+
 Requires Python 3.12+ and [Poetry](https://python-poetry.org/). Training pretrained models is best done on a GPU
 (see the [training guide](https://includeamin.github.io/WBC-Classification/training/) and `notebooks/train_colab.ipynb`).
 

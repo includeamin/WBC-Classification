@@ -5,10 +5,14 @@ Thanks for helping! This project uses [Poetry](https://python-poetry.org/) and P
 ## Setup
 
 ```bash
-poetry install --with dev,docs --extras kaggle
+make install-docs   # = poetry install --with dev,docs --extras kaggle
 ```
 
+Run `make help` to list every shortcut (`make check`, `make format`, `make docs`, `make train`, ...).
+
 ## Checks (all run in CI)
+
+`make check` runs lint, type-check and tests. `make docs` builds the docs site. Without `make`:
 
 ```bash
 poetry run ruff check . && poetry run ruff format --check .
