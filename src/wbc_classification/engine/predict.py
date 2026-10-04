@@ -57,12 +57,28 @@ def predict_images(
     return predictions
 
 
-def annotate_image(prediction: Prediction, output_dir: Path) -> Path:
-    """Write a copy of the image with the predicted label drawn on it."""
+def annotate_image(prediction: Prediction, output_dir: Path, name: str | None = None) -> Path:
+    """Write a copy of the image with the predicted label drawn on it.
+
+    The file is called ``name`` if given, otherwise ``<stem>_pred.png``.
+    """
     image = load_image(prediction.path)
     confidence = prediction.probabilities[prediction.label]
     ImageDraw.Draw(image).text((8, 8), f"{prediction.label} {confidence:.0%}", fill=(0, 255, 0))
     output_dir.mkdir(parents=True, exist_ok=True)
-    out = output_dir / f"{prediction.path.stem}_pred.png"
+    out = output_dir / (name or f"{prediction.path.stem}_pred.png")
     image.save(out)
     return out
+
+
+def annotate_predictions(predictions: Sequence[Prediction], output_dir: Path) -> list[Path]:
+    """Annotate a batch, giving predictions that share a stem unique file names."""
+    seen: dict[str, int] = {}
+    written: list[Path] = []
+    for prediction in predictions:
+        stem = prediction.path.stem
+        seen[stem] = seen.get(stem, 0) + 1
+        count = seen[stem]
+        name = f"{stem}_pred.png" if count == 1 else f"{stem}_{count}_pred.png"
+        written.append(annotate_image(prediction, output_dir, name=name))
+    return written

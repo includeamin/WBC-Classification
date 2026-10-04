@@ -3,7 +3,12 @@ import json
 import pytest
 
 from wbc_classification.engine.evaluate import evaluate_checkpoint
-from wbc_classification.engine.predict import annotate_image, collect_images, predict_images
+from wbc_classification.engine.predict import (
+    annotate_image,
+    annotate_predictions,
+    collect_images,
+    predict_images,
+)
 from wbc_classification.errors import CheckpointError, DataError
 
 
@@ -68,3 +73,28 @@ def test_collect_images_ignores_non_images(tmp_path, write_image):
 def test_annotate_writes_file(trained, cell_image, tmp_path):
     (pred,) = predict_images(trained.best_checkpoint, [cell_image], device="cpu")
     assert annotate_image(pred, tmp_path).is_file()
+
+
+def test_annotate_predictions_same_stem_in_subdirs(trained, write_image, tmp_path):
+    write_image(tmp_path / "a" / "x.png")
+    write_image(tmp_path / "b" / "x.png")
+    preds = predict_images(trained.best_checkpoint, [tmp_path / "a", tmp_path / "b"], device="cpu")
+    out = tmp_path / "out"
+    paths = annotate_predictions(preds, out)
+    assert [p.name for p in paths] == ["x_pred.png", "x_2_pred.png"]
+    assert all(p.is_file() for p in paths)
+
+
+def test_annotate_predictions_same_stem_different_suffix(trained, write_image, tmp_path):
+    write_image(tmp_path / "x.png")
+    write_image(tmp_path / "x.jpg")
+    preds = predict_images(trained.best_checkpoint, [tmp_path], device="cpu")
+    paths = annotate_predictions(preds, tmp_path / "out")
+    assert len({p.name for p in paths}) == 2
+    assert all(p.is_file() for p in paths)
+
+
+def test_annotate_predictions_unique_stem(trained, cell_image, tmp_path):
+    preds = predict_images(trained.best_checkpoint, [cell_image], device="cpu")
+    (path,) = annotate_predictions(preds, tmp_path)
+    assert path.name == f"{cell_image.stem}_pred.png"
