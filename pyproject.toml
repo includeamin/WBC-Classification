@@ -36,6 +36,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.ruff]
 line-length = 100
 src = ["src", "tests"]
+extend-exclude = ["docs/superpowers"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
